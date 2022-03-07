@@ -1,6 +1,6 @@
 package com.parkit.parkingsystem.model;
 
-import java.util.Calendar;
+import javax.annotation.Nullable;
 import java.util.Date;
 
 public class Ticket {
@@ -44,18 +44,19 @@ public class Ticket {
     }
 
     public Date getInTime() {
-        return inTime;
+        return (Date) this.inTime.clone();
     }
 
     public void setInTime(Date inTime) {
-        this.inTime = inTime;
+         this.inTime = (Date) inTime.clone();
     }
 
+    @Nullable
     public Date getOutTime() {
-        return outTime;
+        return this.outTime == null ? null : (Date) this.outTime.clone();
     }
 
-    public void setOutTime(Date outTime) {
-        this.outTime = outTime;
+    public void setOutTime(@Nullable Date outTime) {
+        this.outTime = outTime == null ? null : (Date) outTime.clone();
     }
 }
