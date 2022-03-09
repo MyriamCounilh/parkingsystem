@@ -3,7 +3,6 @@ package com.parkit.parkingsystem.config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -14,9 +13,8 @@ public class DataBaseConfig {
 
     private static final Logger logger = LogManager.getLogger("DataBaseConfig");
 
-
     public Connection getConnection() throws ClassNotFoundException, SQLException {
-        try (InputStream input = new FileInputStream("db.properties")) {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties")) {
             Properties prop = new Properties();
 
             prop.load(input);

@@ -23,6 +23,7 @@ public class TicketDAO {
     public boolean saveTicket(Ticket ticket){
         Connection con = null;
         PreparedStatement ps = null;
+
         try {
             con = dataBaseConfig.getConnection();
             ps = con.prepareStatement(DBConstants.SAVE_TICKET);
@@ -49,7 +50,7 @@ public class TicketDAO {
         Ticket ticket = null;
         PreparedStatement ps = null;
         try {
-            con = dataBaseConfig.getConnection();
+           con = dataBaseConfig.getConnection();
            ps = con.prepareStatement(DBConstants.GET_TICKET);
             //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
             ps.setString(1,vehicleRegNumber);
@@ -71,8 +72,8 @@ public class TicketDAO {
         }finally {
             dataBaseConfig.closeConnection(con);
             dataBaseConfig.closePreparedStatement(ps);
-            return ticket;
         }
+        return ticket;
     }
 
     public boolean updateTicket(Ticket ticket) {
@@ -93,5 +94,24 @@ public class TicketDAO {
             dataBaseConfig.closePreparedStatement(ps);
         }
         return false;
+    }
+
+    public boolean deleteTicket(Ticket ticket) {
+        Connection con = null;
+        PreparedStatement ps = null;
+        try {
+            con = dataBaseConfig.getConnection();
+            ps = con.prepareStatement(DBConstants.DELETE_TICKET);
+            ps.setInt(1,ticket.getId());
+            ps.execute();
+            System.out.println("Delete to the vehicle");
+            return true;
+        }catch (Exception ex){
+            logger.error("ERROR when delete to the vehicle",ex);
+            return false;
+        }finally {
+            dataBaseConfig.closeConnection(con);
+            dataBaseConfig.closePreparedStatement(ps);
+        }
     }
 }
