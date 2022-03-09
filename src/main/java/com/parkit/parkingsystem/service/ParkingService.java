@@ -107,6 +107,11 @@ public class ParkingService {
         try{
             String vehicleRegNumber = getVehichleRegNumber();
             Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
+            if(ticket == null) {
+                System.out.println("Error any vehicle found with number : " + vehicleRegNumber);
+                return;
+            }
+
             Date outTime = new Date();
             ticket.setOutTime(outTime);
             fareCalculatorService.calculateFare(ticket);
