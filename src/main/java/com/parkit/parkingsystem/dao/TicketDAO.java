@@ -23,6 +23,7 @@ public class TicketDAO {
     public boolean saveTicket(Ticket ticket){
         Connection con = null;
         PreparedStatement ps = null;
+
         try {
             con = dataBaseConfig.getConnection();
             ps = con.prepareStatement(DBConstants.SAVE_TICKET);
@@ -49,7 +50,7 @@ public class TicketDAO {
         Ticket ticket = null;
         PreparedStatement ps = null;
         try {
-            con = dataBaseConfig.getConnection();
+           con = dataBaseConfig.getConnection();
            ps = con.prepareStatement(DBConstants.GET_TICKET);
             //ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
             ps.setString(1,vehicleRegNumber);
