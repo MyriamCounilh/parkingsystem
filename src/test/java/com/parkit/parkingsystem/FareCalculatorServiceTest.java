@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
 
@@ -122,5 +123,61 @@ public class FareCalculatorServiceTest {
         ticket.setParkingSpot(parkingSpot);
         fareCalculatorService.calculateFare(ticket);
         assertEquals( (24 * Fare.CAR_RATE_PER_HOUR) , ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareCarFreeParking() {
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - ( 29 * 60 * 1000 ) );//Add free parking feature for the first 30 minutes
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        fareCalculatorService.calculateFare(ticket);
+        assertEquals(0, ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareBikeFreeParking() {
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - ( 29 * 60 * 1000 ) );//Add free parking feature for the first 30 minutes
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(5, ParkingType.BIKE,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        fareCalculatorService.calculateFare(ticket);
+        assertEquals(0, ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareCarNotFreeParking() {
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - ( 31 * 60 * 1000 ) );//Not free parking feature
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        fareCalculatorService.calculateFare(ticket);
+        assertNotEquals(0, ticket.getPrice());
+    }
+
+    @Test
+    public void calculateFareBikeNotFreeParking() {
+        Date inTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - ( 31 * 60 * 1000 ) );//Not free parking feature
+        Date outTime = new Date();
+        ParkingSpot parkingSpot = new ParkingSpot(4, ParkingType.BIKE,false);
+
+        ticket.setInTime(inTime);
+        ticket.setOutTime(outTime);
+        ticket.setParkingSpot(parkingSpot);
+        fareCalculatorService.calculateFare(ticket);
+        assertNotEquals(0, ticket.getPrice());
     }
 }
