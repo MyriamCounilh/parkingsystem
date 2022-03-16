@@ -8,6 +8,7 @@ import com.parkit.parkingsystem.model.Ticket;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,6 +50,7 @@ public class TicketDAO {
         Connection con = null;
         Ticket ticket = null;
         PreparedStatement ps = null;
+
         try {
            con = dataBaseConfig.getConnection();
            ps = con.prepareStatement(DBConstants.GET_TICKET);
@@ -87,12 +89,35 @@ public class TicketDAO {
             ps.setInt(3,ticket.getId());
             ps.execute();
             return true;
-        }catch (Exception ex){
+        } catch (Exception ex){
             logger.error("Error saving ticket info",ex);
-        }finally {
+        } finally {
             dataBaseConfig.closeConnection(con);
             dataBaseConfig.closePreparedStatement(ps);
         }
         return false;
     }
+
+    public int countTicket(String vehicleRegNumber){
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try {
+            con = dataBaseConfig.getConnection();
+            ps = con.prepareStatement(DBConstants.COUNT_TICKET);
+            ps.setString(1,vehicleRegNumber);
+            ResultSet rs = ps.executeQuery();
+            System.out.println(vehicleRegNumber);
+            if(rs.next()) {
+                return rs.getInt("ticketCount");
+            }
+        } catch (Exception ex){
+            logger.error("Error when count ticket",ex);
+        } finally {
+            dataBaseConfig.closeConnection(con);
+            dataBaseConfig.closePreparedStatement(ps);
+        }
+        return 0;
+    }
+
 }
