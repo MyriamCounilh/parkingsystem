@@ -142,10 +142,10 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareBikeFreeParking() {
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - ( 29 * 60 * 1000 ) );//Add free parking feature for the first 30 minutes
+        //Add free parking feature for the first 30 minutes
+        inTime.setTime( System.currentTimeMillis() - ( 29 * 60 * 1000 ) );
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(5, ParkingType.BIKE,false);
-
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
@@ -170,10 +170,10 @@ public class FareCalculatorServiceTest {
     @Test
     public void calculateFareBikeNotFreeParking() {
         Date inTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - ( 31 * 60 * 1000 ) );//Not free parking feature
+        //Not free parking feature
+        inTime.setTime( System.currentTimeMillis() - ( 31 * 60 * 1000 ) );
         Date outTime = new Date();
         ParkingSpot parkingSpot = new ParkingSpot(4, ParkingType.BIKE,false);
-
         ticket.setInTime(inTime);
         ticket.setOutTime(outTime);
         ticket.setParkingSpot(parkingSpot);
