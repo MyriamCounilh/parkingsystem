@@ -3,15 +3,23 @@ package com.parkit.parkingsystem.service;
 import com.parkit.parkingsystem.constants.Fare;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.model.Ticket;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.spi.AbstractLogger;
+import org.apache.logging.log4j.Logger;
+
 
 public class FareCalculatorService {
 
+    public static final String EXPECTED_INFO_MESSAGE = "Add free parking feature for the first 30 minutes";
+    private static final Logger LOGGER = LogManager.getLogger(FareCalculatorService.class);
+
     private TicketDAO ticketDAO;
+
+    public static final double REDUC_5_PCT = 0.95;
 
     public FareCalculatorService(TicketDAO ticketDAO) {
         this.ticketDAO = ticketDAO;
     }
-
 
     public long durationInMinute(Ticket ticket) {
         long inHour = ticket.getInTime().getTime();
@@ -23,9 +31,8 @@ public class FareCalculatorService {
          * Add free parking feature for the first 30 minutes
          */
         if (durationInMinute <= 30) {
-            System.out.println("Add free parking feature for the first 30 minutes");
-            System.out.println(durationInMinute + " minutes");
-            durationInMinute = 0;
+            LOGGER.info(EXPECTED_INFO_MESSAGE);
+             durationInMinute = 0;
         }
         return durationInMinute;
     }
@@ -35,8 +42,8 @@ public class FareCalculatorService {
          * Add reduc User 5%
          */
         if (ticketDAO.countTicket(ticket.getVehicleRegNumber()) >= 2) {
-            ticket.setPrice(ticket.getPrice() - (ticket.getPrice() * 5 / 100));
-            System.out.println("5 % de réducion");
+            ticket.setPrice(ticket.getPrice() * REDUC_5_PCT);
+            System.out.println("5 % the reduc");
         }
     }
 
@@ -47,8 +54,6 @@ public class FareCalculatorService {
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
             throw new IllegalArgumentException("Out time provided is incorrect:"+ticket.getOutTime().toString());
         }
-
-        //TODO: Some tests are failing here. Need to check if this logic is correct
 
         switch (ticket.getParkingSpot().getParkingType()){
             case CAR: {

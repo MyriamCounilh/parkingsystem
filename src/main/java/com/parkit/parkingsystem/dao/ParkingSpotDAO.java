@@ -27,7 +27,7 @@ public class ParkingSpotDAO {
             ps.setString(1, parkingType.toString());
             rs = ps.executeQuery();
             if (rs.next()){
-                result = rs.getInt(1);;
+                result = rs.getInt(1);
             }
         } catch (Exception ex){
             logger.error("Error fetching next available slot",ex);
@@ -68,4 +68,5 @@ public class ParkingSpotDAO {
             }
         }
     }
+
 }
