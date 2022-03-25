@@ -48,7 +48,6 @@ public class FareCalculatorService {
     }
 
     public void calculateFare(Ticket ticket){
-
         long duration = durationInMinute(ticket);
 
         if( (ticket.getOutTime() == null) || (ticket.getOutTime().before(ticket.getInTime())) ){
